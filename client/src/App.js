@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+// import Home from "./components/Home";
+import { Container } from "reactstrap";
+import Login from "./components/Login";
+// import Registration from "./components/Registration";
+import Logout from "./components/Logout";
+import { ToastContainer } from "react-toastify";
+import { Protector } from "./helpers";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <BrowserRouter>
+        <Routes>
+          {/* <Route path="/" element={<Protector Component={Home} />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
+          {/* <Route path="/registration" element={<Registration />} /> */}
+        </Routes>
+        <ToastContainer />
+      </BrowserRouter>
+    </Container>
   );
 }
 
