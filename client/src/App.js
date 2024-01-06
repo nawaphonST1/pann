@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import Home from "./components/Home";
+import Home from "./components/Home";
 import { Container } from "reactstrap";
 import Login from "./components/Login";
 // import Registration from "./components/Registration";
@@ -12,7 +12,7 @@ function App() {
     <Container>
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={<Protector Component={Home} />} /> */}
+          <Route path="/" element={<Protector Component={Home} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           {/* <Route path="/registration" element={<Registration />} /> */}
