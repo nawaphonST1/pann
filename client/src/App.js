@@ -1,25 +1,14 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
-import { Container } from "reactstrap";
-import Login from "./components/Login";
-// import Registration from "./components/Registration";
-import Logout from "./components/Logout";
-import { ToastContainer } from "react-toastify";
-import { Protector } from "./helpers";
+import logo from './logo.svg';
+import './App.css';
+import Button from 'react-bootstrap/Button';
+import LoginForm from './LoginForm';
 
 function App() {
+  const clickMe = () => console.log('hello world')
   return (
-    <Container>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Protector Component={Home} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          {/* <Route path="/registration" element={<Registration />} /> */}
-        </Routes>
-        <ToastContainer />
-      </BrowserRouter>
-    </Container>
+    <div class="container">
+      <LoginForm/>
+    </div>
   );
 }
 
