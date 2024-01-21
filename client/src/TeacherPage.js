@@ -1,13 +1,13 @@
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 
-function StudentPage() {
+function TeacherPage() {
   return (
     <div class="container">
-      Student Page
+      Teacher Page
     </div>
     
   );
 }
 
-export default StudentPage;
+export default TeacherPage;
