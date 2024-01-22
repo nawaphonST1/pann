@@ -411,12 +411,13 @@ export interface ApiEventEvent extends Schema.CollectionType {
     singularName: 'event';
     pluralName: 'events';
     displayName: 'Event';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    name: Attribute.String;
+    Eventname: Attribute.String;
     effective_datetime: Attribute.DateTime;
     owner: Attribute.Relation<
       'api::event.event',
