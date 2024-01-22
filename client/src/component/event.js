@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import axiosConfig from '../axios-interceptor';
+import Form from 'react-bootstrap/Form';
 
 
 const Eventform = () => {
@@ -36,7 +37,7 @@ const Eventform = () => {
         <form onSubmit={handleSubmit}>
             <label>
                 Name of event:
-                <input
+                <Form.Control
                     type="text"
                     value={Eventname}
                     onChange={(e) => setEventname(e.target.value)}
@@ -45,14 +46,15 @@ const Eventform = () => {
             <br />
             <label>
                 Date-Time:
-                <input
+                <Form.Control
                     type="datetime-local"
                     value={effective_datetime}
                     onChange={(e) => seteffective_datetime(e.target.value)}
                 />
             </label>
             <br />
-            <button type="submit">Add Event</button>
+            <br />
+            <button type="submit" class="btn btn-outline-success">Add Event</button>
         </form>
     );
 };

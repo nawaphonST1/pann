@@ -5,8 +5,12 @@ body {
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: #020024;
-    color: #ddd;
+    background: linear-gradient(
+      90deg,
+      rgb(182, 178, 245) 20%,
+      rgb(71, 117, 255) 73%
+    );
+    color: #ffffff;
   }
   
   code {
@@ -28,7 +32,7 @@ body {
   /* End home */
   
   /* Login */
-  .login {
+  .Login {
     min-height: 100vh;
     align-items: center;
     background: linear-gradient(
@@ -44,16 +48,3 @@ body {
   }
   
   /* End Login */
-  
-  /* Register */
-  .register {
-    min-height: 100vh;
-    align-items: center;
-    background: linear-gradient(
-      90deg,
-      rgba(2, 0, 36, 1) 20%,
-      rgba(27, 146, 196, 1) 56%,
-      rgba(2, 0, 36, 1) 73%
-    );
-  }
-  /* End register */

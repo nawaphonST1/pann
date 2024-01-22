@@ -7,6 +7,7 @@ import axios from 'axios';
 function TeacherPage() {
   return (
     <div class="container">
+      <style />
       Teacher Page
       <h1>Announcement of event</h1>
       <Eventform />
