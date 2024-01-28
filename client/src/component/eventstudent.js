@@ -4,7 +4,7 @@ import axiosConfig from '../axios-interceptor';
 import './eventstudent.css';
 
 const EventStudent = () => {
-  const [events, setEvents] = useState([]);
+  const [Event, setEvents] = useState([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -14,9 +14,14 @@ const EventStudent = () => {
             owner: userId,
           });
         // Replace 'YOUR_STRAPI_URL' with the actual URL of your Strapi API
-        const apiUrl = 'http://localhost:1337/api/events';
-        const response = await axios.get(apiUrl);
-        setEvents(response.data);
+        const response = await axios.get('http://localhost:1337/api/events', {
+          headers: {
+              'Authorization': `Bearer ${axiosConfig.jwt}`,
+          }
+      });
+        console.log(response.data.data)
+        setEvents(response.data.data);
+        console.log(Event)
       } catch (error) {
         console.error('Error fetching events:', error);
       }
@@ -37,10 +42,10 @@ const EventStudent = () => {
           </tr>
         </thead>
         <tbody>
-          {events.map((event) => (
-            <tr key={event.id}>
-              <td>{event.EventName}</td>
-              <td>{event.EffectiveDatetime}</td>
+          {Event.map((Event) => (
+            <tr key={Event.id}>
+              <td>{Event.attributes && Event.attributes.Eventname}</td>
+              <td>{Event.attributes && Event.attributes.effective_datetime}</td>
               {/* Add more cells if needed */}
             </tr>
           ))}
