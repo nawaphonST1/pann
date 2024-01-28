@@ -55,8 +55,8 @@ const Entrypage = () => {
             <ul>
                 {Array.isArray(entries) && entries.map((entry) => (
                     <li key={entry.id}>
-                        <h3>{entry.attributes && entry.attributes.Entryname}</h3>
-                        <p>Result: {entry.attributes && entry.attributes.Result}</p>
+                        <p>{entry.attributes && entry.attributes.Entryname}
+                        <br></br>Result: {entry.attributes && entry.attributes.Result}</p>
                         {/* Add more entry details as needed */}
                     </li>
                 ))}
