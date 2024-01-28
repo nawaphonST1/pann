@@ -10,6 +10,8 @@ import {
 } from "react-router-dom";
 import StudentPage from './StudentPage';
 import TeacherPage from './TeacherPage';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Entrypage from './component/entrypage';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/teacher",
     element: <TeacherPage/>,
+  },
+  {
+    path: "/Entrypage/:eventId",
+    element: <Entrypage />,
   }
 ]);
 
@@ -33,7 +39,14 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// import { BrowserRouter as Router } from 'react-router-dom';
+
+// ReactDOM.render(
+//   <Router>
+//     <App />
+//   </Router>,
+//   document.getElementById('root')
+// );
+
+
 reportWebVitals();
