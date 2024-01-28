@@ -5,6 +5,8 @@ import axiosConfig from '../axios-interceptor';
 
 const EventTeacher = () => {
   const [Event, setEvents] = useState([]);
+  const [editedName, setEditedName] = useState('');
+  const [editingEventId, setEditingEventId] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -46,6 +48,31 @@ const EventTeacher = () => {
     }
   };
 
+  const handleEditName = async (eventId, newName) => {
+    try {
+      await axios.put(`http://localhost:1337/api/events/${eventId}`, {
+        data: {
+          Eventname: newName,
+        },
+      }, {
+        headers: {
+          'Authorization': `Bearer ${axiosConfig.jwt}`,
+        },
+      });
+
+      setEvents((prevEvents) =>
+        prevEvents.map((event) =>
+          event.id === eventId ? { ...event, attributes: { ...event.attributes, Eventname: newName } } : event
+        )
+      );
+
+      setEditingEventId(null);
+      setEditedName('');
+    } catch (error) {
+      console.error('Error editing name:', error);
+    }
+  };
+
   return (
     <div>
       <h1>Event Page</h1>
@@ -63,8 +90,23 @@ const EventTeacher = () => {
               <td>{Event.attributes && Event.attributes.Eventname}</td>
               <td>{Event.attributes && Event.attributes.effective_datetime}</td>
               <td>
-                <button onClick={() => handleDelete(Event.id)} type="submit" class="btn btn-outline-success">Delete</button>
+                <button onClick={() => handleDelete(Event.id)} type="submit" class="btn btn-outline-success" >Delete</button>
               </td>
+              <td>
+                {editingEventId === Event.id ? (
+                  <>
+                    <input
+                      type="text"
+                      value={editedName}
+                      onChange={(e) => setEditedName(e.target.value)}
+                    />
+                    <button onClick={() => handleEditName(Event.id, editedName)} >Save</button>
+                  </>
+                ) : (
+                  <button onClick={() => setEditingEventId(Event.id)} type="submit" class="btn btn-outline-success" >Edit</button>
+                )}
+              </td>
+
             </tr>
           ))}
         </tbody>
