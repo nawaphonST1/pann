@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import axiosConfig from '../axios-interceptor';
+import Entrypage from './entrypage.js';
+import { useNavigate } from 'react-router-dom';
 
 
 const EventTeacher = () => {
   const [Event, setEvents] = useState([]);
   const [editedName, setEditedName] = useState('');
   const [editingEventId, setEditingEventId] = useState(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -87,6 +92,11 @@ const EventTeacher = () => {
         <tbody>
           {Event.map((Event) => (
             <tr key={Event.id}>
+              <td>
+              <Link to={`/Entrypage/${Event.id}`} onClick={() => navigate(`/Entrypage/${Event.id}`)}>
+                {Event.attributes && Event.attributes.Eventname}
+              </Link>
+              </td>
               <td>{Event.attributes && Event.attributes.Eventname}</td>
               <td>{Event.attributes && Event.attributes.effective_datetime}</td>
               <td>
@@ -108,7 +118,8 @@ const EventTeacher = () => {
               </td>
 
             </tr>
-          ))}
+          ))}.
+
         </tbody>
       </table>
     </div>
