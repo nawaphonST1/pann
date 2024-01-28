@@ -13,17 +13,22 @@ const Eventform = () => {
 
         try {
             const userId = axiosConfig;
+            const isoDateTime = new Date(effective_datetime).toISOString();
             console.log('Request Payload:', {
                 Eventname,
-                effective_datetime,
+                effective_datetime: isoDateTime,
                 owner: userId,
               });
             const response = await axios.post('http://localhost:1337/api/events', {
-                Eventname,
-                effective_datetime,
+                "data": {
+                  "Eventname": Eventname,
+                  "effective_datetime":  effective_datetime
+                }
+              },
+            {
                 headers: {
                     'Authorization': `Bearer ${axiosConfig.jwt}`,
-                },
+                }
             });
 
             console.log('Activity added:', response.data);
@@ -38,7 +43,7 @@ const Eventform = () => {
             <label>
                 Name of event:
                 <Form.Control
-                    type="text"
+                    type="int"
                     value={Eventname}
                     onChange={(e) => setEventname(e.target.value)}
                 />
