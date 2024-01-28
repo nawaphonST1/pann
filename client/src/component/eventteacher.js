@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import axiosConfig from '../axios-interceptor';
 
+
 const EventTeacher = () => {
   const [Event, setEvents] = useState([]);
 
@@ -29,7 +30,21 @@ const EventTeacher = () => {
     fetchEvents();
   }, []);
 
-  
+  const handleDelete = async (eventId) => {
+    try {
+      // Replace 'YOUR_STRAPI_URL' with the actual URL of your Strapi API
+      await axios.delete(`http://localhost:1337/api/events/${eventId}`, {
+        headers: {
+          'Authorization': `Bearer ${axiosConfig.jwt}`,
+        },
+      });
+
+      // Update state after successful deletion
+      setEvents((prevEvents) => prevEvents.filter((event) => event.id !== eventId));
+    } catch (error) {
+      console.error('Error deleting event:', error);
+    }
+  };
 
   return (
     <div>
@@ -47,7 +62,9 @@ const EventTeacher = () => {
             <tr key={Event.id}>
               <td>{Event.attributes && Event.attributes.Eventname}</td>
               <td>{Event.attributes && Event.attributes.effective_datetime}</td>
-              {/* Add more cells if needed */}
+              <td>
+                <button onClick={() => handleDelete(Event.id)} type="submit" class="btn btn-outline-success">Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
