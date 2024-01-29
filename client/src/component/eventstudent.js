@@ -2,26 +2,29 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import axiosConfig from '../axios-interceptor';
 import './eventstudent.css';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const EventStudent = () => {
-  const [Event, setEvents] = useState([]);
+  const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const userId = axiosConfig;
-        console.log('Request Payload:', {
-            owner: userId,
-          });
-        // Replace 'YOUR_STRAPI_URL' with the actual URL of your Strapi API
-        const response = await axios.get('http://localhost:1337/api/events', {
+        // Assuming axiosConfig includes the username of the logged-in user
+        const username = axiosConfig.username;
+
+        const response = await axios.get(`http://localhost:1337/api/entries?populate=*&owner.username=${username}`, {
           headers: {
-              'Authorization': `Bearer ${axiosConfig.jwt}`,
+            'Authorization': `Bearer ${axiosConfig.jwt}`,
           }
-      });
-        console.log(response.data.data)
-        setEvents(response.data.data);
-        console.log(Event)
+        });
+
+        // Filter events based on the ownership of the entry
+        const filteredEvents = response.data.data.map(entry => entry.attributes.event.data.attributes);
+
+        setEvents(filteredEvents);
       } catch (error) {
         console.error('Error fetching events:', error);
       }
@@ -42,10 +45,15 @@ const EventStudent = () => {
           </tr>
         </thead>
         <tbody>
-          {Event.map((Event) => (
+          {events.map((Event) => (
             <tr key={Event.id}>
-              <td>{Event.attributes && Event.attributes.Eventname}</td>
-              <td>{Event.attributes && Event.attributes.effective_datetime}</td>
+               <button type="submit" class="btn btn-outline-success" >
+                <Link to={`/Entrypage/${Event.id}`} onClick={() => navigate(`/Entrypage/${Event.id}`)}>
+                  Result
+                </Link>
+              </button>
+              <td>{Event.Eventname}</td>
+              <td>{Event.effective_datetime}</td>
               {/* Add more cells if needed */}
             </tr>
           ))}
