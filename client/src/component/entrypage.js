@@ -21,7 +21,9 @@ const Entrypage = () => {
 
                 setEventDetails(eventResponse.data);
 
-                const entriesResponse = await axios.get(`http://localhost:1337/api/entries?event=${eventId}`, {
+                const username = axiosConfig.username;
+
+                const entriesResponse = await axios.get(`http://localhost:1337/api/entries?_where[0][event.id_eq]=${eventId}&_where[1][owner.username_eq]=${username}`, {
                     headers: {
                         'Authorization': `Bearer ${axiosConfig.jwt}`,
                     },
@@ -48,7 +50,6 @@ const Entrypage = () => {
                 <div>
                     <h1>{eventDetails.attributes && eventDetails.attributes.Eventname}</h1>
                     <p>Effective Datetime: {eventDetails.attributes && eventDetails.attributes.effective_datetime}</p>
-                    {/* Add more details as needed */}
                 </div>
             )}
             <h2>Entries:</h2>
@@ -57,11 +58,9 @@ const Entrypage = () => {
                     <li key={entry.id}>
                         <p>{entry.attributes && entry.attributes.Entryname}
                         <br></br>Result: {entry.attributes && entry.attributes.Result}</p>
-                        {/* Add more entry details as needed */}
                     </li>
                 ))}
             </ul>
-
         </div>
     );
 };
