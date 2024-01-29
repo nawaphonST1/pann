@@ -84,19 +84,19 @@ const EventTeacher = () => {
       <table border="1">
         <thead>
           <tr>
+            <th> </th>
             <th>Event Name</th>
             <th>Effective Datetime</th>
-            {/* Add more columns if needed */}
           </tr>
         </thead>
         <tbody>
           {Event.map((Event) => (
             <tr key={Event.id}>
-              <td>
+              <button type="submit" class="btn btn-outline-success" >
               <Link to={`/Entrypage/${Event.id}`} onClick={() => navigate(`/Entrypage/${Event.id}`)}>
-                {Event.attributes && Event.attributes.Eventname}
+                Result
               </Link>
-              </td>
+              </button>
               <td>{Event.attributes && Event.attributes.Eventname}</td>
               <td>{Event.attributes && Event.attributes.effective_datetime}</td>
               <td>
@@ -118,7 +118,7 @@ const EventTeacher = () => {
               </td>
 
             </tr>
-          ))}.
+          ))}
 
         </tbody>
       </table>
