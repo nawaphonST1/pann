@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import axiosConfig from '../axios-interceptor';
+import axiosConfig from '../../axios-interceptor.js';
 import Entrypage from './entrypage.js';
 import { useNavigate } from 'react-router-dom';
 

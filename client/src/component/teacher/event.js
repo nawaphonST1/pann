@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import axiosConfig from '../axios-interceptor';
+import axiosConfig from '../../axios-interceptor';
 import Form from 'react-bootstrap/Form';
 
 
