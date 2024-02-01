@@ -9,7 +9,7 @@ const DisplayMatchingEntry = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:1337/api/users/me?populate=entries.event', {
+        const response = await axios.get('http://localhost:1337/api/users/me?populate=entries.event&events?filters[id][$eq]=1', {
           headers: {
             'Authorization': `Bearer ${axiosConfig.jwt}`,
           }
