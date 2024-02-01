@@ -1,16 +1,15 @@
-import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
 import React from 'react';
-import Eventform from './component/event';
-import axios from 'axios';
+import Eventform from './component/teacher/event';
+import EventTeacher from './component/teacher/eventteacher';
 
 function TeacherPage() {
   return (
-    <div class="container">
+    <div className="container d-flex flex-column align-items-center justify-content-center">
       <style />
       Teacher Page
       <h1>Announcement of event</h1>
       <Eventform />
+      <EventTeacher />
     </div>
     
   );
