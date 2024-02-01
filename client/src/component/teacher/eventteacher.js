@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axiosConfig from '../../axios-interceptor.js';
 import Entrypage from './entrypage.js';
 import { useNavigate } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 
 
 const EventTeacher = () => {
@@ -11,31 +12,39 @@ const EventTeacher = () => {
   const [editedName, setEditedName] = useState('');
   const [editingEventId, setEditingEventId] = useState(null);
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
 
+
+
+  const fetchEvents = async () => {
+    try {
+      const userId = axiosConfig;
+      console.log('Request Payload:', {
+        owner: userId,
+      });
+
+      const response = await axios.get('http://localhost:1337/api/events', {
+        headers: {
+          'Authorization': `Bearer ${axiosConfig.jwt}`,
+        }
+      });
+
+      const filteredEvents = response.data.data.filter(event =>
+        event.attributes.Eventname.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      console.log(response.data.data);
+      setEvents(filteredEvents);
+      console.log(Event);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const userId = axiosConfig;
-        console.log('Request Payload:', {
-            owner: userId,
-          });
-
-        const response = await axios.get('http://localhost:1337/api/events', {
-          headers: {
-              'Authorization': `Bearer ${axiosConfig.jwt}`,
-          }
-      });
-        console.log(response.data.data)
-        setEvents(response.data.data);
-        console.log(Event)
-      } catch (error) {
-        console.error('Error fetching events:', error);
-      }
-    };
-
+    // Fetch events on component mount
     fetchEvents();
-  }, []);
+  }, [searchTerm]);
 
   const handleDelete = async (eventId) => {
     try {
@@ -80,7 +89,18 @@ const EventTeacher = () => {
 
   return (
     <div>
-      <h1>Event Page</h1>
+      <h1>Event</h1>
+      <label>
+        <label htmlFor="search">Search Event: </label>
+        <Form.Control class="form-control"
+          type="text"
+          id="search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </label>
+      <br></br>
+      <br></br>
       <table border="1">
         <thead>
           <tr>
@@ -93,9 +113,9 @@ const EventTeacher = () => {
           {Event.map((Event) => (
             <tr key={Event.id}>
               <button type="submit" class="btn btn-outline-success" >
-              <Link to={`/Entrypage/${Event.id}`} onClick={() => navigate(`/Entrypage/${Event.id}`)}>
-                Result
-              </Link>
+                <Link to={`/Entrypage/${Event.id}`} onClick={() => navigate(`/Entrypage/${Event.id}`)}>
+                  Result
+                </Link>
               </button>
               <td>{Event.attributes && Event.attributes.Eventname}</td>
               <td>{Event.attributes && Event.attributes.effective_datetime}</td>
