@@ -32,6 +32,9 @@
       "relation": "manyToOne",
       "target": "api::event.event",
       "inversedBy": "entries"
+    },
+    "status": {
+      "type": "string"
     }
   }
 }
