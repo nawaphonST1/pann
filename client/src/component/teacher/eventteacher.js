@@ -5,6 +5,7 @@ import axiosConfig from '../../axios-interceptor.js';
 import Entrypage from './entrypage.js';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
+import { Card } from 'react-bootstrap';
 
 
 const EventTeacher = () => {
@@ -51,7 +52,7 @@ const EventTeacher = () => {
       // Replace 'YOUR_STRAPI_URL' with the actual URL of your Strapi API
       await axios.delete(`http://localhost:1337/api/events/${eventId}`, {
         headers: {
-          'Authorization': `Bearer ${axiosConfig.jwt}`,
+          'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
         },
       });
 
@@ -70,7 +71,7 @@ const EventTeacher = () => {
         },
       }, {
         headers: {
-          'Authorization': `Bearer ${axiosConfig.jwt}`,
+          'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
         },
       });
 
@@ -90,58 +91,62 @@ const EventTeacher = () => {
   return (
     <div>
       <h1>Event</h1>
-      <label>
-        <label htmlFor="search">Search Event: </label>
-        <Form.Control class="form-control"
-          type="text"
-          id="search"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </label>
-      <br></br>
-      <br></br>
-      <table border="1">
-        <thead>
-          <tr>
-            <th> </th>
-            <th>Event Name</th>
-            <th>Effective Datetime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Event.map((Event) => (
-            <tr key={Event.id}>
-              <button type="submit" class="btn btn-outline-success" >
-                <Link to={`/Entrypage/${Event.id}`} onClick={() => navigate(`/Entrypage/${Event.id}`)}>
-                  Result
-                </Link>
-              </button>
-              <td>{Event.attributes && Event.attributes.Eventname}</td>
-              <td>{Event.attributes && Event.attributes.effective_datetime}</td>
-              <td>
-                <button onClick={() => handleDelete(Event.id)} type="submit" class="btn btn-outline-success" >Delete</button>
-              </td>
-              <td>
-                {editingEventId === Event.id ? (
-                  <>
-                    <input
-                      type="text"
-                      value={editedName}
-                      onChange={(e) => setEditedName(e.target.value)}
-                    />
-                    <button onClick={() => handleEditName(Event.id, editedName)} >Save</button>
-                  </>
-                ) : (
-                  <button onClick={() => setEditingEventId(Event.id)} type="submit" class="btn btn-outline-success" >Edit</button>
-                )}
-              </td>
+      <Card>
+        <Card.Body>
+          <label>
+            <label htmlFor="search">Search Event: </label>
+            <Form.Control class="form-control"
+              type="text"
+              id="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </label>
+          <br></br>
+          <br></br>
+          <table border="1">
+            <thead>
+              <tr>
+                <th> </th>
+                <th>Event Name</th>
+                <th>Effective Datetime</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Event.map((Event) => (
+                <tr key={Event.id}>
+                  <button type="submit" class="btn btn-outline-success" >
+                    <Link to={`/Entrypage/${Event.id}`} onClick={() => navigate(`/Entrypage/${Event.id}`)}>
+                      Result
+                    </Link>
+                  </button>
+                  <td>{Event.attributes && Event.attributes.Eventname}</td>
+                  <td>{Event.attributes && Event.attributes.effective_datetime}</td>
+                  <td>
+                    <button onClick={() => handleDelete(Event.id)} type="submit" class="btn btn-outline-success" >Delete</button>
+                  </td>
+                  <td>
+                    {editingEventId === Event.id ? (
+                      <>
+                        <input
+                          type="text"
+                          value={editedName}
+                          onChange={(e) => setEditedName(e.target.value)}
+                        />
+                        <button onClick={() => handleEditName(Event.id, editedName)} >Save</button>
+                      </>
+                    ) : (
+                      <button onClick={() => setEditingEventId(Event.id)} type="submit" class="btn btn-outline-success" >Edit</button>
+                    )}
+                  </td>
 
-            </tr>
-          ))}
+                </tr>
+              ))}
 
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </Card.Body>
+      </Card>
     </div>
   );
 };

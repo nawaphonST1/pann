@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import axiosConfig from './axios-interceptor';
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [submitEnabled, setSubmitEnabled] = useState(true);
@@ -26,28 +26,36 @@ const LoginForm = () => {
             let result = await axios.post('http://localhost:1337/api/auth/local', {
                 identifier: username,
                 password: password
-            })
-            axiosConfig.jwt = result.data.jwt
-            axios.defaults.headers.common = { 'Authorization': `bearer ${axiosConfig}` }
+            });
 
-            result = await axios.get('http://localhost:1337/api/users/me?populate=role')
-            if(result.data.role){
-                if(result.data.role.name == 'Student'){
+            // Store the token in localStorage
+            localStorage.setItem('jwtToken', result.data.jwt);
+
+            // Set the token in axios configuration
+            axiosConfig.jwt = result.data.jwt;
+            axios.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`};
+
+            result = await axios.get('http://localhost:1337/api/users/me?populate=role',{
+                headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
+                },
+              });
+
+            if (result.data.role) {
+                if (result.data.role.name === 'Student') {
                     navigate('/student');
-                }
-                else if(result.data.role.name == 'Teacher'){
+                } else if (result.data.role.name === 'Teacher') {
                     navigate('/teacher');
                 }
-
             }
-            console.log(result)
+            console.log(result);
         } catch (e) {
-            console.log(e)
-            console.log('wrong username & password')
+            console.log(e);
+            console.log('wrong username & password');
             setSubmitEnabled(true);
         }
     };
-
+    
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicUsername">
@@ -80,63 +88,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
-// import { useState } from 'react';
-// import { Button, Form, Input, Alert } from 'antd';
-// import axios from 'axios'
-
-// const URL_AUTH = "/api/auth/local"
-
-// export default function LoginScreen(props) {
-
-//   const [isLoading, setIsLoading] = useState(false)
-//   const [errMsg, setErrMsg] = useState(null)
-
-//   const handleLogin = async (formData) => {
-//     try {
-//       setIsLoading(true)
-//       setErrMsg(null)
-//       const response = await axios.post(URL_AUTH, {...formData})
-//       const token = response.data.jwt
-//       axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
-//       props.onLoginSuccess();
-//     } catch (err) {
-//       console.log(err)
-//       setErrMsg(err.message)
-//     } finally { setIsLoading(false) }
-//   }
-
-//   return (
-//     <Form
-//       onFinish={handleLogin}
-//       autoComplete="off">
-//       {errMsg &&
-//         <Form.Item>
-//           <Alert message={errMsg} type="error" />
-//         </Form.Item>
-//       }
-
-//       <Form.Item
-//         label="Username"
-//         name="identifier"
-//         rules={[{ required: true, }]}>
-//         <Input />
-//       </Form.Item>
-
-//       <Form.Item
-//         label="Password"
-//         name="password"
-//         rules={[{ required: true },]}>
-//         <Input.Password />
-//       </Form.Item>
-
-//       <Form.Item>
-//         <Button
-//           type="primary"
-//           htmlType="submit" loading={isLoading}>
-//           Submit
-//         </Button>
-//       </Form.Item>
-//     </Form>
-//   )
-// }

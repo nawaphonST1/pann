@@ -11,7 +11,9 @@ import {
 import StudentPage from './StudentPage';
 import TeacherPage from './TeacherPage';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Entrypage from './component/entrypage';
+import Entrypage from './component/teacher/entrypage';
+import Entrystudent from './component/student/entrypagestudent';
+
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/Entrypage/:eventId",
     element: <Entrypage />,
+  },
+  {
+    path: "/Entrystudent/:eventId",
+    element: <Entrystudent />,
   }
 ]);
 

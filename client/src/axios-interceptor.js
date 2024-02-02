@@ -1,17 +1,13 @@
-import axios from "axios";
+import axios from 'axios';
 
-const axiosConfig = {}
+const axiosConfig = {};
 
 axios.interceptors.request.use((request) => {
-    if(axiosConfig.jwt){
-        request.headers.set('Authorization', `Bearer ${axiosConfig.jwt}`);
+    if (localStorage.getItem('jwtToken')) {
+        request.headers.set('Authorization', `Bearer ${localStorage.getItem('jwtToken')}`);
     }
-  
+
     return request;
-  }
-);
+});
 
 export default axiosConfig;
-
-
-

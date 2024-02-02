@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import axiosConfig from '../../axios-interceptor.js';
+import { Card } from 'react-bootstrap';
 
 const Entrypage = () => {
     const { eventId } = useParams();
@@ -16,7 +17,7 @@ const Entrypage = () => {
                 // Fetch event details
                 const response = await axios.get(`http://localhost:1337/api/events/${eventId}?populate=entries.owner`, {
                     headers: {
-                        'Authorization': `Bearer ${axiosConfig.jwt}`,
+                        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
                     },
                 });
 
@@ -36,6 +37,12 @@ const Entrypage = () => {
 
     return (
         <div>
+        <br></br>
+        <br></br>
+        <br></br>
+        <div className="container d-flex flex-column align-items-center justify-content-center">
+            <Card>
+            <Card.Body>
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
             {eventDetails && (
@@ -52,12 +59,16 @@ const Entrypage = () => {
                                     </div>
                                 )}
                                 <p>Result: {entry.attributes && entry.attributes.result}</p>
+                                <p>Status: {entry.attributes && entry.attributes.status}</p>
                                 <br></br>
                             </li>
                         ))}
                     </ul>
                 </div>
             )}
+            </Card.Body>
+            </Card>
+        </div>
         </div>
     );
 };

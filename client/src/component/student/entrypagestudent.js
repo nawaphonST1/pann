@@ -1,69 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import axiosConfig from '../../axios-interceptor';
+import { useParams } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
-const DisplayMatchingEntry = () => {
-  const [userDetails, setUserDetails] = useState({});
-  const [selectedEvent, setSelectedEvent] = useState(null);
+const Entrystudent = () => {
+  const [entryDetails, setEntryDetails] = useState(null);
+  const { eventId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:1337/api/users/me?populate=entries.event&events?filters[id][$eq]=1', {
+        const response = await axios.get('http://localhost:1337/api/events/studentRelated', {
           headers: {
             'Authorization': `Bearer ${axiosConfig.jwt}`,
           }
         });
 
-        console.log(response.data);
-        setUserDetails(response.data || {});
+        console.log(response.data.data);
+        setEntryDetails(response.data.data);
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        console.error('Error fetching entry details:', error);
       }
     };
 
     fetchData();
   }, []); // Empty dependency array to run the effect only once on mount
 
-  const handleEventClick = (event) => {
-    // Set the selected event when clicked
-    setSelectedEvent(event);
-  };
+  const acknowledge = async (id) => {
+    try {
+        const response = await axios.post(`http://localhost:1337/api/entries/${id}/ack_datetime`);
+        window.location.reload();
+    } catch (error) {
+        console.error("Error deleting data:", error);
+    }
+}
 
   return (
     <div>
-      <h1>Your Results</h1>
-      {userDetails.entries && userDetails.entries.map(entry => (
-        <div key={entry.id}>
-          <p>Result: {entry.result}</p>
-          <p>Event Name: {entry.event.Eventname}</p>
-        </div>
-      ))}
-
-      <h2>Click on an event to display associated entry:</h2>
-      {userDetails.entries && userDetails.entries.map(entry => (
-        <div key={entry.event.id} onClick={() => handleEventClick(entry.event)}>
-          <p>Event Name: {entry.event.Eventname}</p>
-        </div>
-      ))}
-
-      {/* Display selected event's entry */}
-      {selectedEvent && userDetails.entries && (
-        <div>
-          <h3>Selected Event: {selectedEvent.Eventname}</h3>
-          <ul>
-            {userDetails.entries
-              .filter(entry => entry.event.id === selectedEvent.id && entry.owner === userDetails.id)
-              .map(entry => (
-                <li key={entry.id}>
-                  Result: {entry.result}, Created At: {entry.createdAt}
-                </li>
-              ))}
-          </ul>
-        </div>
-      )}
+      <Card>
+        <Card.Body>
+      {entryDetails && entryDetails.map((event) => {
+        if (event.id.toString() === eventId) {
+          return (
+            <div key={event.id}>
+              <h2>Entry Details for Event ID {event.id}</h2>
+              <p>Event Name: {event.attributes.Eventname}</p>
+              <p>Effective Datetime: {event.attributes.effective_datetime}</p>
+              <p>Result: {event.attributes.entry.result}</p>
+              <p>status: {event.attributes.entry.status}</p>
+              <p>Confirm: {event.attributes.entry.ack_datetime}</p>
+              {/* Add other entry details as needed */}
+            </div>
+          );
+        } else {
+          return null;
+        }
+      })}
+      <Button className="acknowledge-button btn btn-success" onClick={() => acknowledge(entryDetails.id)}>Confirm</Button>
+      </Card.Body>
+      </Card>
     </div>
   );
 };
 
-export default DisplayMatchingEntry;
+export default Entrystudent;
